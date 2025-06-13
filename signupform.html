@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .register-form {
+            width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .register-form header {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .register-form .form-group {
+            margin-bottom: 20px;
+        }
+        .register-form .form-group label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .register-form .form-group input[type="text"],
+        .register-form .form-group input[type="email"],
+        .register-form .form-group input[type="tel"],
+        .register-form .form-group input[type="password"] {
+            width: 100%;
+            height: 40px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .register-form .form-group input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .register-form .captcha {
+            width: 100px;
+            height: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .register-form .captcha-refresh {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .register-form .submit-btn {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            height: 50px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-form">
+        <header>REGISTER</header>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" name="full-name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password">
+            </div>
+            <div class="form-group">
+                <label for="captcha">Captcha</label>
+                <input type="text" id="captcha-input" name="captcha">
+                <span class="captcha" id="captcha"></span>
+                <span class="captcha-refresh" onclick="generateCaptcha()">&#x21bb;</span>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="remember-me" name="remember-me">
+                <label for="remember-me">Remember Me</label>
+            </div>
+            <button class="submit-btn">Create Account</button>
+        </form>
+    </div>
+
+    <script>
+        function generateCaptcha() {
+            let captcha = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            for (let i = 0; i < 5; i++) {
+                captcha += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            document.getElementById('captcha').innerHTML = captcha;
+        }
+
+        generateCaptcha();
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+           const fullName = document.getElementById('full-name').value;
+const email = document.getElementById('email').value;
+const phone = document.getElementById('phone').value;
+const password = document.getElementById('password').value;
+const confirmPassword = document.getElementById('confirm-password').value;
+const captchaInput = document.getElementById('captcha-input').value;
+const captcha = document.getElementById('captcha').innerHTML;
+
+if (password === confirmPassword && captchaInput === captcha) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = {
+        fullName,
+        email,
+        phone,
+        password
+    };
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
+    window.location.href = 'success.html';
+} else {
+    alert('Invalid credentials or captcha');
+}
+});
+</script>
+</body>
+</html>
